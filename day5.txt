@@ -1,0 +1,75 @@
+#include<iostream>
+#include<string>
+
+using namespace std;
+
+
+class Student
+{
+public:
+
+	int sNo;
+	string fName,lName;
+	float c, cpp, java, total = 0.0f, avg = 0.0f;
+
+	void acceptStudent()
+	{
+		cin >> sNo >> fName >> lName >> c >> cpp >> java;
+	}
+	void displayStudent()
+	{
+		cout << sNo << "  " << lName << "  " << fName << "  " << c << "  " << cpp << "  " << java << endl;
+	}
+	void report()
+	{
+		this->total += this->c + this->cpp + this->java;
+		this->avg = this->total / 3;
+		cout << "Total marks of " << this->fName << " is" << this->total << endl;
+		cout << "Average is " << this->avg << endl;
+	}
+};
+
+void sortData(Student s1[],int n)
+{
+	cout << "Printing the sorted data " << endl;
+	cout << "student number" << "\t" << "first Name" << "\t" << "last Name" << "\t" << "total" << "\t" << "average" << "\t" << endl;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = i + 1; j < n; j++)
+		{
+			if (s1[i].avg < s1[j].avg)
+			{
+				Student tem = s1[i];
+				s1[i] = s1[j];
+				s1[j] = tem;
+			}
+		}
+	}
+	for (int j = 0; j < n; j++)
+	{
+		cout << s1[j].sNo << "\t" << s1[j].fName << "\t" << s1[j].lName << "\t" << s1[j].total << "\t" << s1[j].avg << endl;
+	}
+	
+	
+	
+}
+int main()
+{
+	Student s[4];
+	int i,j, siz;
+	float total[2] = { 0.0f }, avg[2] = {0.0f};
+	siz = size(s);
+	for (i = 0; i < siz; i++)
+	{
+		s[i].acceptStudent();
+	}
+	for (i = 0; i < siz; i++)
+	{
+		s[i].displayStudent();
+	}
+	for (i = 0; i < siz; i++)
+	{
+		s[i].report();
+	}
+	sortData(s,siz);
+}
