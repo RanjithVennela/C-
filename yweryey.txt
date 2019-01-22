@@ -1,0 +1,246 @@
+#include<iostream>
+#include<string>
+#include"Student.h"
+#include<fstream>
+using namespace std;
+int len = 3;
+
+int main()
+{
+	fstream object,temp;
+	int n,id;
+	while (1)
+	{
+		cout << "Enter 1 to store student details" << endl;
+		cout << "Enter 2 to display all student details" << endl;
+		cout << "Enter 3 to find a student using ID" << endl;
+		cout << "Enter 4 to update student details using ID" << endl;
+		cout << "Enter 5 to delete student details using ID" << endl;
+		cout << "Enter 6 to exit" << endl;
+		cin >> n;
+		if (n == 6)
+		{
+			break;
+		}
+		else
+		{
+			switch(n)
+			{
+			case 1: {
+				PgStudent stdObj;
+				object.open("D:\\Users\\ravennel\\Desktop\\C++\\Users.dat", ios::app);
+				stdObj.getStudentId();
+				stdObj.getStudentFirstName();
+				stdObj.getStudentLastName();
+				stdObj.getugCourseName();
+				stdObj.getugCourseFees();
+				stdObj.getugPercentage();
+				stdObj.getpgCourseName();
+				stdObj.getpgCourseFees();
+				stdObj.getpgPercentage();
+				object.write((char*)&stdObj, sizeof(stdObj));
+				object.close(); 
+				break; }
+			case 2:	object.open("D:\\Users\\ravennel\\Desktop\\C++\\Users.dat", ios::in);
+				while (!object.eof())
+				{
+					PgStudent e;
+					object.read((char*)&e, sizeof(e));
+					e.showStudentId();
+					e.showStudentFirstName();
+					e.showStudentLastName();
+					e.showugCourseName();
+					e.showugCourseFees();
+					e.showugPercentage();
+					e.showpgCourseName();
+					e.showpgCourseFees();
+					e.showpgPercentage();
+				}
+				object.close();
+				break;
+			case 3:	
+				cout << "Enter id to find student" << endl;
+				cin >> id;
+				object.open("D:\\Users\\ravennel\\Desktop\\C++\\Users.dat", ios::in);
+				while (!object.eof())
+				{
+					PgStudent e;
+					object.read((char*)&e, sizeof(e));
+					if (e.Id == id)
+					{
+						e.showStudentId();
+						e.showStudentFirstName();
+						e.showStudentLastName();
+						e.showugCourseName();
+						e.showugCourseFees();
+						e.showugPercentage();
+						e.showpgCourseName();
+						e.showpgCourseFees();
+						e.showpgPercentage();
+						object.close();
+						break;
+					}
+				}
+			case 4: cout << "Enter id of student to update details" << endl;
+					cin >> id;
+					temp.open("D:\\Users\\ravennel\\Desktop\\C++\\Temp.dat", ios::out);
+					object.open("D:\\Users\\ravennel\\Desktop\\C++\\Users.dat", ios::in);
+					while (!object.eof())
+					{
+						PgStudent e,temp1;
+						object.read((char*)&e, sizeof(e));
+						if (e.Id == id)
+						{
+							cout << "hello" << endl;
+							temp1.Id = e.Id;
+							temp1.ugCourseName = e.ugCourseName;
+							temp1.ugFees = e.ugFees;
+							temp1.ugPercentage = e.pgPercentage;
+							temp1.pgCourseName = e.pgCourseName;
+							temp1.pgFees = e.pgFees;
+							temp1.pgPercentage = e.pgPercentage;
+							temp1.getStudentFirstName();
+							temp1.getStudentLastName();
+							temp.write((char*)&temp1, sizeof(temp1));
+						}
+						else
+						{
+							object.write((char*)&e, sizeof(e));
+						}
+					}
+					remove("Users.dat");
+					rename("Temp.dat", "Users.dat");
+					object.close();
+					temp.close();
+			}
+		}
+	}
+}
+
+=========================================================================================================================
+
+
+#include<iostream>
+#include<string>
+
+using namespace std;
+
+class Student {
+public:
+	int Id;
+	char firstName[50], lastName[50];
+
+	void getStudentId()
+	{
+		cout << "ID ";
+		cin >> this->Id;
+	}
+	void getStudentFirstName()
+	{
+		cout << "First Name ";
+		cin >> this->firstName;
+	}
+	void getStudentLastName()
+	{
+		cout << "lastName ";
+		cin >> this->lastName;
+	}
+
+
+	void showStudentId()
+	{
+		cout << "ID " << this->Id << endl;
+	}
+	void showStudentFirstName()
+	{
+		cout << "First Name " << this->firstName << endl;
+	}
+	void showStudentLastName()
+	{
+		cout << "lastName " << this->lastName << endl;
+	}
+};
+class UgStudent :public Student {
+public:
+	string ugCourseName;
+	int ugFees;
+	float ugPercentage;
+
+	void getugCourseName()
+	{
+		cout << "UgCourseName ";
+		cin >> ugCourseName;
+	}
+	void getugCourseFees()
+	{
+		cout << "ugFees ";
+		cin >> ugFees;
+	}
+	void getugPercentage()
+	{
+		cout << "UgPercentage ";
+		cin >> ugPercentage;
+	}
+
+	void showugCourseName()
+	{
+		cout << "UgCourseName " << this->ugCourseName << endl;
+	}
+	void showugCourseFees()
+	{
+		cout << "ugFees " << this->ugFees << endl;
+	}
+	void showugPercentage()
+	{
+		cout << "UgPercentage " << this->ugPercentage << endl;
+	}
+};
+class Sports {
+public:
+	string sportsName;
+
+	void getSportsName()
+	{
+		cout << "Enter Sport Name ";
+		cin >> sportsName;
+	}
+	void showSportsName()
+	{
+		cout << "Sport Name " << this->sportsName << endl;
+	}
+};
+class PgStudent : public UgStudent, public Sports {
+public:
+	string pgCourseName;
+	int pgFees;
+	float pgPercentage;
+	void getpgCourseName()
+	{
+		cout << "pgCourseName ";
+		cin >> pgCourseName;
+	}
+	void getpgCourseFees()
+	{
+		cout << "pgFees ";
+		cin >> pgFees;
+	}
+	void getpgPercentage()
+	{
+		cout << "pgPercentage ";
+		cin >> pgPercentage;
+	}
+
+	void showpgCourseName()
+	{
+		cout << "pgCourseName " << this->pgCourseName << endl;
+	}
+	void showpgCourseFees()
+	{
+		cout << "pgFees " << this->pgFees << endl;
+	}
+	void showpgPercentage()
+	{
+		cout << "pgPercentage " << this->pgPercentage << endl;
+	}
+
+};
