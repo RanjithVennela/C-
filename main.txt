@@ -1,0 +1,69 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+
+using namespace std;
+
+class Question
+{
+public:
+	int questionId;
+	char question[100];
+	string option1, option2, option3, option4;
+
+	void getQuestionId()
+	{
+		cout << "Enter QuestionId" << endl;
+		cin >> questionId;
+	}
+	void getQuestion()
+	{
+		cin.ignore();
+		cout << "Enter Question" << endl;
+		cin.getline(question, 100);
+	}
+	void getoptions()
+	{
+		cout << "Enter Option1" << endl;
+		cin >> option1;
+		cout << "Enter Option2" << endl;
+		cin >> option2;
+		cout << "Enter Option3" << endl;
+		cin >> option3;
+		cout << "Enter Option4" << endl;
+		cin >> option4;
+	}
+	void displayQuestion()
+	{
+		cout << endl;
+		cout << questionId << question << endl;
+		cout << "1. "<< option1 << "\t"  << "2. " << option2 << endl;
+		cout  << "3. "<< option3 << "\t" << "4. "<< option4 << endl;
+
+	}
+
+};
+
+int main()
+{
+	fstream file1;
+	file1.open("D:\\Users\\ravennel\\Desktop\\Question\\warmup.dat", ios::app);
+	for (int i = 0; i < 10; i++)
+	{
+		Question qtn;
+		qtn.getQuestionId();
+		qtn.getQuestion();
+		qtn.getoptions();
+		file1.write((char*)&qtn, sizeof(qtn));
+	}
+	file1.close();
+
+	file1.open("D:\\Users\\ravennel\\Desktop\\Question\\warmup.dat", ios::in);
+	while (!file1.eof())
+	{
+		Question qtn1;
+		file1.read((char*)&qtn1, sizeof(qtn1));
+		qtn1.displayQuestion();
+	}
+	file1.close();
+}
